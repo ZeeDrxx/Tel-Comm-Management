@@ -1,3 +1,4 @@
+
 //======================================= IMPORTS & DEFINES ======================================//
 #include <stdio.h>
 #include <stdlib.h>
@@ -289,6 +290,7 @@ char BillManagementMenu(char cmd){
 
 /*----------------------------------COMMANDS----------------------------------*/
 void AddClient(Client client[], int i){    
+    Bool e = ON; int k;
     fflush(stdin);
 
     printf("    - First name     : ");
@@ -297,36 +299,44 @@ void AddClient(Client client[], int i){
     printf("    - Name           : "); 
     input(client[i].name, DEF);
 
-    do {
-        printf("    - Age            : "); 
-        scanf("%d", &client[i].age);
-    } while(client[i].age <= 0 || client[i].age > 99);
-    fflush(stdin);
-
-
-    do {  
-        printf("    - Gender (M or F): ");
-        scanf(" %c", &client[i].gender);
-        client[i].gender = toupper(client[i].gender);
-    } while(client[i].gender != 'M' && client[i].gender != 'F');
-    fflush(stdin);  
-
-    printf("    - Phone number   : "); 
-    VerifyPhoneNum(client[i].phone_number);
-
-    printf("    - ID Card        : ");
-    VerifyNationalID(client[i].national_id_card);
-
-    printf("    - City           : "); 
-    input(client[i].city, DEF);
-
-    printf("    - Adress         : ");
-    input(client[i].adress, DEF); 
-
     strcpy(client[i].full_name, fusename(client[i].first_name, client[i].name));
 
+    for(k = 0; k <= i; k++){
+        if(strcmp(client[k].full_name, client[i].full_name) == 0){
+            printf("> This client already exist.\n\n");
+            e = OFF;
+            break;
+        } 
+    }
 
-    printf("\n> Client number %d successfully added!\n\n", i + 1);
+    if(e == ON){
+        do{
+            printf("    - Age            : "); 
+            scanf("%d", &client[i].age);
+        }while(client[i].age <= 0 || client[i].age > 99);
+        fflush(stdin);
+
+        do{  
+            printf("    - Gender (M or F): ");
+            scanf(" %c", &client[i].gender);
+            client[i].gender = toupper(client[i].gender);
+        }while(client[i].gender != 'M' && client[i].gender != 'F');
+        fflush(stdin);  
+
+        printf("    - Phone number   : "); 
+        VerifyPhoneNum(client[i].phone_number);
+
+        printf("    - ID Card        : ");
+        VerifyNationalID(client[i].national_id_card);
+
+        printf("    - City           : "); 
+        input(client[i].city, DEF);
+
+        printf("    - Adress         : ");
+        input(client[i].adress, DEF); 
+
+        printf("\n> Client number %d successfully added!\n\n", i + 1);        
+    }
 }
 
 
